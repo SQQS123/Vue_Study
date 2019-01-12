@@ -1,0 +1,169 @@
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.min.js"></script>
+</head>
+
+<body>
+<!--控制文本的显示-->
+<!-- <div id="app">{{warnning}}</div> -->
+<div id="app">{{message}}</div>	
+
+<script type="text/javascript">
+	var datas = {
+		message:"Hello world",
+		warnning:"警告!!!"
+	};
+	var app = new Vue({
+		//绑定元素
+		el:"#app",
+		data:datas
+	})
+</script>
+
+<!--控制元素的属性-->
+<div id="app-2">
+	<span v-bind:title="message">鼠标放在此控件上会显示页面加载时间</span>
+</div>
+
+<script type="text/javascript">
+	// 相当于vue的Model,负责数据的组织
+	// 对此Model的修改会影响到绑定此Model的控件
+	var datas = {
+		message:'页面加载于' + new Date().toLocaleString()
+	};
+	// 相当于vue的ViewModel，负责Model与View的绑定
+	var app2 = new Vue({
+		el:"#app-2",
+		data:datas
+	})
+	
+	app2 = new Vue({
+	el:"#app-3",
+	data:{
+		message:'哈哈哈哈哈哈'
+	}
+	})
+</script>
+
+
+<!-- 条件判断 -->
+<div id="app-3">
+	<p v-if="seen">能看到我吗？骚年</p>
+</div>
+
+<script type="text/javascript">
+	var app3 = new Vue({
+		el:"#app-3",
+		data:{
+			seen:false
+		}
+	})
+</script>
+
+<!-- 循环 -->
+<div id="app-4">
+	<ol>
+		<li v-for="todo in todo_list">
+			{{todo.text}}
+		</li>
+	</ol>
+</div>
+<script type="text/javascript">
+	var app4 = new Vue({
+		el:'#app-4',
+		data:{
+			todo_list:[
+			{"text":"邪王炎杀黑龙波"},
+			{"text":"邪王炎杀炼狱焦"},
+			{"text":"灵光镜反冲"}
+			]
+		}
+	})
+</script>
+
+<!-- 处理用户的输入 -->
+<!-- 点击事件处理 -->
+<div id="app-5">
+	<p>{{message}}</p>
+	<button v-on:click="reverseMessage">逆转消息</button>
+</div>
+<script type="text/javascript">
+	var app5 = new Vue({
+		el:'#app-5',
+		data:{
+			message:'你说啥?'
+		},
+		methods:{
+			reverseMessage:function(){
+				this.message = this.message.split("").reverse().join("")
+			}
+		}
+	})
+</script>
+
+<!-- 用户输入文本处理 -->
+<div id="app-6">
+	<p>{{message}}</p>
+	<input type="text" v-model="message" />
+</div>
+
+<script type="text/javascript">
+	var app6 = new Vue({
+		el:'#app-6',
+		data:{
+			message:'第一排第一个说的啥？'
+		}
+	})
+</script>
+
+<!-- 组件的构建 -->
+<div id="app-7">
+	<ol>
+		<todo-item
+		v-for="item in groceryList"
+		v-bind:todo="item"
+		v-bind:key="item.id">
+		</todo-item>
+	</ol>
+	<ul>
+		<todo-item
+		v-for="obj in itemList"
+		v-bind:todo="obj"
+		v-bind:todo2="obj.text"
+		v-bind:key="obj.id">
+		</todo-item>
+	</ul>
+</div>
+
+<script type="text/javascript">
+	//创建一个新的vue组件，名称为todo-item
+	Vue.component('todo-item',{
+		//组件中的todo属性被引用到这里
+		props:['todo'],
+		//使用todo属性的值来编写模板代码
+		template:'<li>{{todo.text}}</li>'
+	})
+	
+	var app7 = new Vue({
+		el:'#app-7',
+		data:{
+			groceryList:[
+				{id:0,text:'蔬菜'},
+				{id:1,text:'奶酪'},
+				{id:2,text:'随便其他人吃什么东西'}
+			],
+			itemList:[
+				{id:3,text:'天亮'},
+				{id:4,text:'天黑'},
+				{id:5,text:'睡了'}
+			]
+		}
+	})
+</script>
+
+</body>
+
+
+</html>
